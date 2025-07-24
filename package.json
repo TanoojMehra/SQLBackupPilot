@@ -1,0 +1,63 @@
+{
+  "name": "sqlbackuppilot",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev -p 2407",
+    "build": "next build",
+    "start": "next start -p 2407",
+    "lint": "next lint",
+    "clear-db": "node scripts/clear-database.js"
+  },
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.850.0",
+    "@azure/storage-blob": "^12.28.0",
+    "@google-cloud/storage": "^7.16.0",
+    "@prisma/client": "^6.12.0",
+    "@radix-ui/react-dialog": "^1.1.14",
+    "@radix-ui/react-dropdown-menu": "^2.1.15",
+    "@radix-ui/react-separator": "^1.1.7",
+    "@radix-ui/react-slot": "^1.2.3",
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/node-cron": "^3.0.11",
+    "bcryptjs": "^3.0.2",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "geist": "^1.4.2",
+    "googleapis": "^154.0.0",
+    "jsonwebtoken": "^9.0.2",
+    "lucide-react": "^0.525.0",
+    "mssql": "^11.0.1",
+    "mysql2": "^3.14.2",
+    "mysqldump": "^3.2.0",
+    "next": "15.4.3",
+    "node-cron": "^4.2.1",
+    "pg": "^8.16.3",
+    "pg-dump": "^0.10.0",
+    "prisma": "^6.12.0",
+    "react": "19.1.0",
+    "react-dom": "19.1.0",
+    "sqlite3": "^5.1.7",
+    "tailwind-merge": "^3.3.1",
+    "tailwindcss-animate": "^1.0.7"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3",
+    "@tailwindcss/postcss": "^4",
+    "@types/bcryptjs": "^2.4.6",
+    "@types/mssql": "^9.1.7",
+    "@types/node": "^20",
+    "@types/pg": "^8.15.4",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "autoprefixer": "10.4.19",
+    "eslint": "^9",
+    "eslint-config-next": "15.4.3",
+    "postcss": "8.4.38",
+    "tailwindcss": "3.4.3",
+    "typescript": "^5"
+  },
+  "optionalDependencies": {
+    "cardinal": "^2.1.1"
+  }
+}

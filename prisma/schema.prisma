@@ -1,0 +1,130 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+
+
+model User {
+  id           Int      @id @default(autoincrement())
+  email        String   @unique
+  passwordHash String
+  role         Role     @default(OWNER)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  auditLogs    AuditLog[]
+}
+
+enum Role {
+  OWNER
+  ADMIN
+}
+
+model Database {
+  id        Int      @id @default(autoincrement())
+  name      String
+  type      DbType
+  host      String
+  port      Int
+  username  String
+  password  String
+  backupEnabled Boolean @default(false)
+  scheduleId Int?
+  storageId Int?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  backupJobs BackupJob[]
+  backupSchedules BackupSchedule[]
+  schedule BackupSchedule? @relation("DatabaseSchedule", fields: [scheduleId], references: [id])
+  storage StorageAdapter? @relation("DatabaseStorage", fields: [storageId], references: [id])
+}
+
+enum DbType {
+  MYSQL
+  POSTGRES
+  SQLSERVER
+}
+
+model BackupJob {
+  id         Int      @id @default(autoincrement())
+  database   Database @relation(fields: [databaseId], references: [id], onDelete: Cascade)
+  databaseId Int
+  status     JobStatus
+  startedAt  DateTime
+  finishedAt DateTime?
+  size       Int?
+  log        String?
+  filePath   String?
+  storageId  Int?
+  storage    StorageAdapter? @relation(fields: [storageId], references: [id])
+}
+
+enum JobStatus {
+  PENDING
+  RUNNING
+  SUCCESS
+  FAILED
+}
+
+model BackupSchedule {
+  id         Int      @id @default(autoincrement())
+  name       String
+  database   Database? @relation(fields: [databaseId], references: [id])
+  databaseId Int?
+  cron       String
+  retention  Int
+  enabled    Boolean @default(true)
+  databases  Database[] @relation("DatabaseSchedule")
+}
+
+model AuditLog {
+  id        Int      @id @default(autoincrement())
+  user      User?    @relation(fields: [userId], references: [id])
+  userId    Int?
+  action    String
+  details   String?
+  createdAt DateTime @default(now())
+}
+
+model Alert {
+  id        Int      @id @default(autoincrement())
+  type      String
+  message   String
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+
+model StorageAdapter {
+  id        Int      @id @default(autoincrement())
+  type      StorageType
+  name      String
+  config    Json
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  backupJobs BackupJob[]
+  databases Database[] @relation("DatabaseStorage")
+}
+
+enum StorageType {
+  LOCAL
+  S3
+  SFTP
+  GOOGLE_DRIVE
+  AZURE_BLOB
+}
+
+model Settings {
+  id        Int      @id @default(autoincrement())
+  key       String   @unique
+  value     Json
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
