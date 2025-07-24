@@ -102,7 +102,7 @@ Managing and restoring database backups shouldn't be stressful or expensive. I d
 
 1. **Clone the repository**
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/TanoojMehra/SQLBackupPilot
    cd SQLBackupPilot
    ```
 
